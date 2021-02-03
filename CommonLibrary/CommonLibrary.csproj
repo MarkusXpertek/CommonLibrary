@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <PackageId>CommonLibrary</PackageId>
+    <Version>1.0.0</Version>
+    <Authors>Markus</Authors>
+    <Company>GitHub</Company>
+    <PackageDescription>This package adds an Octocat!</PackageDescription>
+    <RepositoryUrl>https://github.com/MarkusXpertek/REPOSITORY</RepositoryUrl>
+  </PropertyGroup>
+
+</Project>
