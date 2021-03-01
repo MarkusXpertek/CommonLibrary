@@ -1,0 +1,34 @@
+name: .NET Core
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 3.1.301
+    - name: Install dependencies
+      run: dotnet restore
+    - name: Build
+      run: dotnet build --configuration Release --no-restore
+    - name: Test
+      run: dotnet test --no-restore --verbosity normal
+
+    - name: Pack
+      run: dotnet pack --no-build --configuration Release MarkusXpertek/CommonLibrary.csproj --output .
+    - name: PushNuget
+      run: dotnet nuget push *.nupkg --source https://api.nuget.org/v3/index.json --api-key ${{secrets.NUGET_CUSTOMFEEDPASSWORD}} --skip-duplicate
+    - name: AddGithubSource
+      run: dotnet nuget add source --username MarkusXpertek --password ${{secrets.NUGET_CUSTOMFEEDPASSWORD}} --name github https://nuget.pkg.github.com/CommonLibrary/index.json
+    - name: PushGithub
+      run: dotnet nuget push *.nupkg --source github --skip-duplicate
